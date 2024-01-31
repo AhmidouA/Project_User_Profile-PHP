@@ -12,7 +12,7 @@
             $message = 'Password and Confirm password not valid!';
         } else {
             // inclure un ficher pour save le signup
-            require_once 'data/db.php';
+            require_once '../data/db.php';
 
             // On vérifie si le username n'est pas deja enregistré.
             $checkUsername = $bdd->prepare('SELECT * FROM users where username=:username');
