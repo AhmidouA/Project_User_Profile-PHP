@@ -60,7 +60,6 @@ if(isset($_POST['login'])) {
     }
 
 }
-
 ?>
 <body>
     <div id="login">
@@ -88,7 +87,6 @@ if(isset($_POST['login'])) {
                                 <input type="submit" name="login" class="btn btn-info btn-md" value="Login">
                                 <a href="/include/signup.php" class="text-info">Register here</a>
                             </div>
-                            
                         </form>
                     </div>
                 </div>
