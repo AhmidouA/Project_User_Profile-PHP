@@ -52,6 +52,17 @@ if(isset($_POST['login'])) {
             $_SESSION['username'] = $result['username'];
             $_SESSION['email'] = $email;
 
+            if(isset($_POST['remember-me'])) {
+                setcookie('email', $email);
+                setcookie('password', $password);
+            } else {
+                if(isset($_COOKIE['email'])) {
+                    setcookie($_COOKIE['email'], ''); 
+                }
+                if(isset($_COOKIE['password'])) {
+                    setcookie($_COOKIE['password'], "");
+                }
+            }
             header("Refresh: 3; URL=/index.php");
         }
         else {
@@ -77,15 +88,41 @@ if(isset($_POST['login'])) {
                             <h3 class="text-center text-info">Login</h3>
                             <div class="form-group">
                                 <label for="email" class="text-info">Email:</label><br>
-                                <input type="text" name="email" id="email" class="form-control">
+                                <input 
+                                    type="text" 
+                                    name="email" 
+                                    id="email" 
+                                    class="form-control" 
+                                    value=
+                                    <?php 
+                                    if (isset($_COOKIE['email'])) echo $_COOKIE['email'];
+                                    ?> 
+                                >
                             </div>
                             <div class="form-group">
                                 <label for="password" class="text-info">Password:</label><br>
-                                <input type="password" name="password" id="password" class="form-control">
+                                <input 
+                                    type="password" 
+                                    name="password" 
+                                    id="password" 
+                                    class="form-control"
+                                    value=
+                                    <?php 
+                                    if (isset($_COOKIE['password'])) echo $_COOKIE['password'];
+                                    ?>
+                                >
                             </div>
                             <div class="form-group">
-                                <input type="submit" name="login" class="btn btn-info btn-md" value="Login">
-                                <a href="/include/signup.php" class="text-info">Register here</a>
+                                <input type="submit" name="login" class="btn btn-info btn-md" value="Login">                  
+                            </div>
+                            <div id="register-link" class="text-right">
+                                <div>
+                                    <label for="remember-me" class="text-info">Remember me
+                                    <input id="remember-me" name="remember-me" type="checkbox"></label>
+                                </div>
+                                <div>           
+                                    <a href="/include/signup.php" class="text-info">Register here</a> 
+                                </div>           
                             </div>
                         </form>
                     </div>

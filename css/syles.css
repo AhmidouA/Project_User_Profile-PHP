@@ -46,3 +46,10 @@ body {
     margin-top: -5.3125rem;
 }
 
+.text-right {
+    padding-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: end;
+}
