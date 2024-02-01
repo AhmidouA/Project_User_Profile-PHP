@@ -1,4 +1,5 @@
 <?php require 'header.html'; ?>
+<title>Login</title>
 <?php
 
 require_once '../data/db.php';
@@ -81,7 +82,6 @@ if(isset($_POST['login'])) {
 ?>
 <body>
     <div id="login">
-        <h3 class="text-center text-white pt-5">Login form</h3>
         <div class="container">
             <div id="login-row" class="row justify-content-center align-items-center">
                 <div id="login-column" class="col-md-6">
@@ -119,15 +119,19 @@ if(isset($_POST['login'])) {
                                     ?>
                                 >
                             </div>
-                            <div class="form-group">
+                            <div class="form-group pt-2">
                                 <input type="submit" name="login" class="btn btn-info btn-md" value="Login">                  
+                                               
                             </div>
+                            <div class="form-group">
+                                <a href="/include/password_forgot.php" class="text-info">Forgot Password</a>
+                            </div>       
                             <div id="register-link" class="text-right">
                                 <div>
                                     <label for="remember-me" class="text-info">Remember me
                                     <input id="remember-me" name="remember-me" type="checkbox"></label>
                                 </div>
-                                <div>           
+                                <div>       
                                     <a href="/include/signup.php" class="text-info">Register here</a> 
                                 </div>           
                             </div>

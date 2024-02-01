@@ -20,7 +20,6 @@ $smtpName = $_ENV['SMTP_NAME'];
 
 $mail = new PHPMailer(true);
 
-try {
     // $mail->SMTPDebug = SMTP::DEBUG_SERVER;  
 
     $mail->isSMTP();                       
@@ -37,26 +36,25 @@ try {
 
 
     $mail->isHTML(true);                      
-    $mail->Subject = 'Confirmation';
-    $mail->Body    = 'To validate your email address, please click on the following link:
+    $mail->Subject = 'Confirm Your Email';
+    $mail->Body    = 'To confirm your email address, please click on the following link:
 
     <a href=
         "http://localhost:8000/include/verify.php?
         email='.$_POST['email'].'&token='.$token.'"
         >
-            Confirmation
+            Confirm your Email
     </a>';
 
 
-    $mail->send();
-    echo "<script type=\"text/javascript\"> alert('Email sent, check you mailbox for validation ')</script>";
-} catch (Exception $e) {
-    echo "Le message n'a pas pu être envoyé. Erreur du mailer : {$mail->ErrorInfo}";
-}
+    if (!$mail->send()) {
+        echo "<script type='text/javascript'>
+            alert('Erreur d'envoi de l'e-mail : ' .$mail->ErrorInfo);
+        </script>";
+    } else {
+        echo '<script type="text/javascript">
+            alert("E-mail envoyé, vérifiez votre boîte de réception pour le mot de passe de réinitialisation");
+        </script>';
+    }
 
-
-
-
-
-
-
+?>

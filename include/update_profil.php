@@ -1,4 +1,5 @@
 <?php require 'header.html' ;?>
+<title>Update Profile</title>
 <?php
 session_start();
 
