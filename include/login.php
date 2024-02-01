@@ -43,33 +43,40 @@ if(isset($_POST['login'])) {
         include('mail.php');
 
     } else {
+       // Vérifier si le mot de passe saisi correspond au mot de passe haché stocké dans la base de données
         $checkPassword = password_verify($password, $result['password']);
 
-        if($checkPassword) {
+        if ($checkPassword) {
+            // Démarrer la session une fois que l'authentification est réussie
             session_start();
-            
+
+            // Stocker les informations de l'utilisateur dans la session
             $_SESSION['id'] = $result['id'];
             $_SESSION['username'] = $result['username'];
             $_SESSION['email'] = $email;
 
-            if(isset($_POST['remember-me'])) {
+            // Gérer la fonctionnalité "Se souvenir de moi"
+            if (isset($_POST['remember-me'])) {
+                // Stocker l'email et le mot de passe haché dans les cookies
                 setcookie('email', $email);
                 setcookie('password', $password);
             } else {
-                if(isset($_COOKIE['email'])) {
-                    setcookie($_COOKIE['email'], ''); 
+                // Supprimer les cookies s'ils existent
+                if (isset($_COOKIE['email'])) {
+                    setcookie($_COOKIE['email'], '');
                 }
-                if(isset($_COOKIE['password'])) {
+                if (isset($_COOKIE['password'])) {
                     setcookie($_COOKIE['password'], "");
                 }
             }
+
+            // Rediriger vers la page d'accueil après une courte pause (Refresh: 3)
             header("Refresh: 3; URL=/index.php");
-        }
-        else {
+        } else {
+            // Message d'erreur si le mot de passe est invalide
             $message = 'Password invalid';
         }
     }
-
 }
 ?>
 <body>

@@ -10,6 +10,8 @@
                 echo 'Hello ' . $_SESSION['username'];
             ?>
         </div>
+        
+        <h1 class="title-home"><a href="include/profile.php">Show Profil</a> </h1><br>
         <h1 class="title-home"><a href="include/logout.php">Logout</a> </h1><br>
 
     <?php
