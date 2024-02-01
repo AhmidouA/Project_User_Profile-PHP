@@ -11,18 +11,18 @@
         } elseif (empty($_POST['password']) || $_POST['password'] !== $_POST['confirmPassword']) {
             $message = 'Password and Confirm password not valid!';
         } else {
-            // inclure un ficher pour save le signup
+
             require_once '../data/db.php';
 
-            // On vérifie si le username n'est pas deja enregistré.
+
             $checkUsername = $bdd->prepare('SELECT * FROM users where username=:username');
             $checkUsername->bindValue('username', $_POST['username']);
             $checkUsername->execute();
 
-            // Retourne la 1er valeur trouvé
+
             $findUsername = $checkUsername->fetch();
 
-            // On vérifie si le mail n'est pas deja enregistré.
+
             $checkMail = $bdd->prepare('SELECT * FROM users where email=:email');
             $checkMail->bindValue('email', $_POST['email']);
             $checkMail->execute();
@@ -34,41 +34,42 @@
             } elseif ($findMail) {
                 $message = 'Le mail existe déja, veuillez choisir un autre';
             } else {
-                // Définition de la fonction token_random_string avec une longueur par défaut de 20 caractères
-                function token_random_string($length = 20) {
-                    // Définition d'une chaîne de caractères contenant des chiffres et des lettres (minuscules et majuscules)
+
+                function token_random_string($length = 20)
+                {
+
                     $characters = '123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-                    
-                    // Initialisation d'une chaîne vide pour stocker le jeton généré
+
+
                     $token = '';
 
-                    // Boucle pour générer chaque caractère du jeton
+
                     for ($i = 0; $i < $length; $i++) {
-                        // Ajout d'un caractère aléatoire de la chaîne $characters au jeton
-                        // Cette partie génère un nombre aléatoire compris entre 0 et la longueur de la chaîne 
-                        // comme  on commence par 0, grace au -1 ça fait 20
-                        $token = $token.$characters[rand(0, strlen($characters) - 1)]; // concatenation 
+
+
+
+                        $token = $token . $characters[rand(0, strlen($characters) - 1)];
                     }
                     return $token;
                 }
 
                 $token = token_random_string(20);
 
-                // hach
+
                 $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-                // Liaison des valeurs aux paramètres de la requête
+
                 $request = $bdd->prepare('INSERT INTO users (username, email, password, token) 
                             VALUES (:username, :email, :password, :token)');
                 $request->bindValue(':username', $_POST['username']);
                 $request->bindValue(':email', $_POST['email']);
-                $request->bindValue(':password', $password); // password haché
-                $request->bindValue(':token', $token); // le token pour confirmer son compte
+                $request->bindValue(':password', $password);
+                $request->bindValue(':token', $token);
 
-                // Exécution de la requête
+
                 $request->execute();
-                
-                // Inclure et exécuter le script d'envoi de courrier
+
+
                 include('mail.php');
             }
         }
@@ -82,7 +83,7 @@
                 <div id="login-column" class="col-md-6">
                     <div id="login-box" class="col-md-12">
                         <?php
-                        // Afficher les messages d'erreur s'ils existent
+
                         if (isset($message)) echo $message
 
                         ?>
