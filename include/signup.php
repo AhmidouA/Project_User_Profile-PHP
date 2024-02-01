@@ -34,18 +34,42 @@
             } elseif ($findMail) {
                 $message = 'Le mail existe déja, veuillez choisir un autre';
             } else {
+                // Définition de la fonction token_random_string avec une longueur par défaut de 20 caractères
+                function token_random_string($length = 20) {
+                    // Définition d'une chaîne de caractères contenant des chiffres et des lettres (minuscules et majuscules)
+                    $characters = '123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                    
+                    // Initialisation d'une chaîne vide pour stocker le jeton généré
+                    $token = '';
+
+                    // Boucle pour générer chaque caractère du jeton
+                    for ($i = 0; $i < $length; $i++) {
+                        // Ajout d'un caractère aléatoire de la chaîne $characters au jeton
+                        // Cette partie génère un nombre aléatoire compris entre 0 et la longueur de la chaîne 
+                        // comme  on commence par 0, grace au -1 ça fait 20
+                        $token = $token.$characters[rand(0, strlen($characters) - 1)]; // concatenation 
+                    }
+                    return $token;
+                }
+
+                $token = token_random_string(20);
+
                 // hach
                 $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
                 // Liaison des valeurs aux paramètres de la requête
-                $request = $bdd->prepare('INSERT INTO users (username, email, password) VALUES (:username, :email, :password)');
+                $request = $bdd->prepare('INSERT INTO users (username, email, password, token) 
+                            VALUES (:username, :email, :password, :token)');
                 $request->bindValue(':username', $_POST['username']);
                 $request->bindValue(':email', $_POST['email']);
                 $request->bindValue(':password', $password); // password haché
+                $request->bindValue(':token', $token); // le token pour confirmer son compte
 
                 // Exécution de la requête
                 $request->execute();
-                echo 'You are registered';
+                
+                // Inclure et exécuter le script d'envoi de courrier
+                include('mail.php');
             }
         }
     }
@@ -83,7 +107,7 @@
                             </div>
                             <div class="form-group">
                                 <input type="submit" name="signup" class="btn btn-info btn-md" value="Submit">
-                                <a href="#" class="btn btn-info btn-md">Login</a>
+                                <a href="/include/login.php" class="btn btn-info btn-md">Login</a>
                             </div>
                         </form>
                     </div>

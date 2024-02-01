@@ -17,8 +17,6 @@ $dotenv->load();
 $smtpUsername = $_ENV['SMTP_USERNAME'];
 $smtpPassword = $_ENV['SMTP_PASSWORD'];
 $smtpName = $_ENV['SMTP_NAME'];
-$smtpSendAddress = $_ENV['SMTP_ADDRESS_TEST'];
-$smtpSendName = $_ENV['SMTP_NAME_TEST'];
 
 $mail = new PHPMailer(true);
 
@@ -35,12 +33,19 @@ try {
 
 
     $mail->setFrom($smtpUsername, $smtpName);
-    $mail->addAddress($smtpSendAddress, $smtpSendName);
+    $mail->addAddress($_POST['email']);
 
 
     $mail->isHTML(true);                      
-    $mail->Subject = 'Cet email est un test';
-    $mail->Body    = 'Afin de valider votre adresse email, merci de cliquer sur le lien suivant';
+    $mail->Subject = 'Confirmation';
+    $mail->Body    = 'Afin de valider votre adresse email, merci de cliquer sur le lien suivant:
+
+    <a href=
+        "http://localhost:8000/include/verify.php?
+        email='.$_POST['email'].'&token='.$token.'"
+        >
+            Confirmation
+    </a>';
 
 
     $mail->send();
